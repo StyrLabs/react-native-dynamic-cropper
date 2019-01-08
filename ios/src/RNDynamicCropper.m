@@ -38,7 +38,8 @@ RCT_EXPORT_METHOD(cropImage:(NSString *)path details:(NSDictionary *)details res
     // This code pretty much never chages. Take the path command that we passed from JS.
     // Read that data into an image. Open the image in the cropper.
     // Profit.
-    UIImage *image = [UIImage imageWithContentsOfFile:path];
+    NSURL* URL = [NSURL URLWithString:path];
+    UIImage *image = [UIImage imageWithContentsOfFile:URL.path];
     TOCropViewController *cropViewController = [[TOCropViewController alloc] initWithImage:image];
       // Locale set here
       if([title length] != 0){
@@ -63,7 +64,7 @@ RCT_EXPORT_METHOD(cropImage:(NSString *)path details:(NSDictionary *)details res
   while (root.presentedViewController != nil) {
     root = root.presentedViewController;
   }
-  
+
   return root;
 }
 
@@ -72,13 +73,14 @@ RCT_EXPORT_METHOD(cropImage:(NSString *)path details:(NSDictionary *)details res
   // Just a way to get file paths
   NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
   NSString *filePath = [[paths objectAtIndex:0] stringByAppendingPathComponent:@"temp.jpg"];
+  NSString * imageData =  [UIImagePNGRepresentation(image) base64EncodedStringWithOptions:NSDataBase64Encoding64CharacterLineLength];
 
   // Write our image data to the above specified path (wherever + temp)
-  [UIImageJPEGRepresentation(image, 1.0) writeToFile:filePath atomically:YES];
+    [UIImageJPEGRepresentation(image, 1.0) writeToFile:filePath atomically:YES];
   // Close the UIView
   [cropViewController dismissViewControllerAnimated:YES completion:nil];
   // Return the path so it can be manipulated elsewhere.
-  self.resolver(filePath);
+  self.resolver(imageData);
 }
 
 - (void)cropViewController:(TOCropViewController *)cropViewController didFinishCancelled:(BOOL)cancelled
