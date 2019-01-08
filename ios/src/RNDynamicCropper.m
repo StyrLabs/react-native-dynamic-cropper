@@ -76,7 +76,7 @@ RCT_EXPORT_METHOD(cropImage:(NSString *)path details:(NSDictionary *)details res
   NSString * imageData =  [UIImagePNGRepresentation(image) base64EncodedStringWithOptions:NSDataBase64Encoding64CharacterLineLength];
 
   // Write our image data to the above specified path (wherever + temp)
-    [UIImageJPEGRepresentation(image, 1.0) writeToFile:filePath atomically:YES];
+  // [UIImageJPEGRepresentation(image, 1.0) writeToFile:filePath atomically:YES];
   // Close the UIView
   [cropViewController dismissViewControllerAnimated:YES completion:nil];
   // Return the path so it can be manipulated elsewhere.
